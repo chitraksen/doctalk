@@ -1,0 +1,9 @@
+
+/archive
+/docs
+/__pycache__
+.DS_Store
+/doctalk/__pycache__
+plan.md
+test.ipynb
+test.py
