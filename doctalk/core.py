@@ -56,7 +56,7 @@ def get_relevant_file(query_engine, query):
 
 
 def dirSearch():
-    index = createIndex("docs1")
+    index = createIndex("docs")
     console.print("Find files in your directory.\n", style="bold")
 
     # set up the query engine with the custom retriever
@@ -74,7 +74,7 @@ def dirSearch():
 
 def fileQuery():
     # TODO: make repititive, history-aware chat
-    index = createIndex("docs1/romeo_and_juliet.txt")
+    index = createIndex("docs/romeo_and_juliet.txt")
     console.print("Chat with your file!", style="bold")
 
     # create query engine
