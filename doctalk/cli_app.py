@@ -7,11 +7,12 @@ from pyfiglet import figlet_format
 # import time
 
 from doctalk.core import *
+from doctalk.config import Config
 
 console = Console()
 
 
-def mainMenu(console):
+def mainMenu():
     # Create the title
     title = "[bold magenta]Main Menu[/bold magenta]"
 
@@ -33,7 +34,7 @@ def mainMenu(console):
     console.print(menu_panel)
 
 
-def processInput(console) -> bool:
+def processInput() -> bool:
     console.print("\nInput choice: ", style="light_green", end="")
     choice = input()
 
@@ -61,8 +62,10 @@ def processInput(console) -> bool:
 def main():
     # Title graphic
     console.print(figlet_format("DocTalk", font="larry3d"), style="bold cyan")
-    flag = True
+    global config
+    config = Config()
 
-    while flag:
-        mainMenu(console)
-        flag = processInput(console)
+    while True:
+        mainMenu()
+        if not processInput():  # returns false if user has chosen to exit
+            break

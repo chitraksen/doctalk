@@ -26,7 +26,6 @@ class FileNameRetriever(VectorIndexRetriever):
 
 # TODO: figure out return type - sense checks?
 def createIndex(path: str):
-    # TODO: get dir as input
     spinner = Halo(text="Creating index...", spinner="dots", color="white")
     spinner.start()
     if os.path.isfile(path):
@@ -56,6 +55,7 @@ def get_relevant_file(query_engine, query):
 
 
 def dirSearch():
+    # TODO: get path as input - option to use last path
     index = createIndex("docs")
     console.print("Find files in your directory.\n", style="bold")
 
@@ -73,6 +73,7 @@ def dirSearch():
 
 
 def fileQuery():
+    # TODO: get path as input - option to use last path
     # TODO: make repititive, history-aware chat
     index = createIndex("docs/romeo_and_juliet.txt")
     console.print("Chat with your file!", style="bold")
@@ -86,6 +87,7 @@ def fileQuery():
 
 
 def dirQuery():
+    # TODO: get path as input - option to use last path
     # TODO: make repititive, history-aware chat
     index = createIndex("docs")
     console.print("Chat with your directory!", style="bold")
