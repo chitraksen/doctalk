@@ -1,2 +1,2 @@
 # DocTalk
-Lets you talk to your docs!
+Lets you talk to your docs.

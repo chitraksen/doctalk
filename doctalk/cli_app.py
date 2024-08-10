@@ -35,7 +35,7 @@ def mainMenu():
 
 
 def processInput() -> bool:
-    console.print("\nInput choice: ", style="light_green", end="")
+    console.print("\nInput choice: ", style="green", end="")
     choice = input()
 
     match choice:

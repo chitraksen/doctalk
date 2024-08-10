@@ -34,7 +34,9 @@ def createIndex(path: str):
         documents = SimpleDirectoryReader(path).load_data()
     # TODO: handle file not found errors
     else:
-        console.print("Error!", stlye="bold red")
+        spinner.fail("Error!")
+        console.print("Exiting application.", style="bold red")
+        raise SystemExit()
 
     Settings.llm = getLLM()
     Settings.embed_model = getEmbeddingModel()
@@ -54,28 +56,62 @@ def get_relevant_file(query_engine, query):
     return "No relevant file found"
 
 
+def getDir() -> str:
+    console.print("Enter directory path.", style="cyan")
+    console.print(
+        "If absolute path is note provided, path is navigated relative to current working directory.",
+        style="cyan",
+    )
+    console.print(
+        "If left blank, current working directory will be chosen.", style="cyan"
+    )
+    while True:
+        input_path = input()
+        if input_path.strip() == "":
+            input_path = os.getcwd()
+            break
+        elif os.path.exists(input_path):
+            break
+        else:
+            print("Input path is not vaild. Please try again.")
+    return input_path
+
+
+def getFile() -> str:
+    console.print("Enter directory path.", style="cyan")
+    console.print(
+        "If absolute path is note provided, path is navigated relative to current working directory.",
+        style="cyan",
+    )
+    while True:
+        input_path = input()
+        if os.path.exists(input_path):
+            break
+        else:
+            print("Input path is not vaild. Please try again.")
+    return input_path
+
+
 def dirSearch():
-    # TODO: get path as input - option to use last path
-    index = createIndex("docs")
-    console.print("Find files in your directory.\n", style="bold")
+    dir_path = getDir()
+    index = createIndex(dir_path)
+    console.print("\nFind files in your directory.", style="bold")
 
     # set up the query engine with the custom retriever
     retriever = FileNameRetriever(index=index, similarity_top_k=2)
     query_engine = RetrieverQueryEngine(retriever=retriever)
 
     # querying directory to seach for files
-    console.print("What file are you looking for?", style="bold cyan")
+    console.print("What file are you looking for?", style="cyan")
     query = input()
     relevant_file = get_relevant_file(query_engine, query)
-    console.print(
-        f"[bold magenta]\nThe most relevant file is:[/bold magenta] {relevant_file}\n"
-    )
+    console.print(f"[magenta]\nThe most relevant file is:[/magenta] {relevant_file}\n")
 
 
 def fileQuery():
-    # TODO: get path as input - option to use last path
     # TODO: make repititive, history-aware chat
-    index = createIndex("docs/romeo_and_juliet.txt")
+    file_path = getFile()
+    index = createIndex(file_path)
     console.print("Chat with your file!", style="bold")
 
     # create query engine
@@ -87,9 +123,9 @@ def fileQuery():
 
 
 def dirQuery():
-    # TODO: get path as input - option to use last path
     # TODO: make repititive, history-aware chat
-    index = createIndex("docs")
+    dir_path = getDir()
+    index = createIndex(dir_path)
     console.print("Chat with your directory!", style="bold")
 
     # create query engine
@@ -135,3 +171,8 @@ def chat():
         console.print("Assisstant: ", style="bold magenta", end="")
         console.print(Markdown(response.response))
         print()
+
+
+# testing
+if __name__ == "__main__":
+    fileQuery()

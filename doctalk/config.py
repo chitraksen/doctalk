@@ -1,6 +1,5 @@
 import json
 import os
-from typing import Any
 from rich.console import Console
 
 console = Console()
@@ -45,7 +44,7 @@ class Config:
             "Previous configuration not found. Please create a new one.",
             style="bold cyan",
         )
-        console.print("Choose your LLM. Currently only support Mistral.", style="bold")
+        console.print("Choose your LLM. Currently only support Mistral.")
         # TODO: add more options
         choices = {
             1: "open-mixtral-8x7b",
