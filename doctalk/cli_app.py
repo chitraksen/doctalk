@@ -24,7 +24,8 @@ def mainMenu():
     table.add_row("[green]1.[/green] Search a directory.")
     table.add_row("[green]2.[/green] Query a file.")
     table.add_row("[green]3.[/green] Query a directory.")
-    table.add_row("[green]4.[/green] Have a chat!")
+    table.add_row("[green]4.[/green] Save a directory index.")
+    table.add_row("[green]5.[/green] Have a chat!")
     table.add_row("[green]Q.[/green] Quit.")
 
     # Create a panel with the title and table
@@ -46,6 +47,8 @@ def processInput() -> bool:
         case "3":
             dirQuery()
         case "4":
+            dirIndex()
+        case "5":
             chat()
         case "q":
             console.print("Exiting application. Goodbye!\n", style="bold red")

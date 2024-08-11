@@ -6,8 +6,6 @@ from llama_index.core import Settings
 
 from doctalk.config import Config
 
-# MISTRAL_API_KEY = os.environ.get("API_KEY")
-
 
 def getLLM():
     # TODO: implement non mistral LLM capabilities

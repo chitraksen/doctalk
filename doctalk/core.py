@@ -8,6 +8,7 @@ from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.chat_engine import SimpleChatEngine
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core import Settings
+from llama_index.core import StorageContext, load_index_from_storage
 from halo import Halo
 
 from doctalk.utils import *
@@ -28,7 +29,16 @@ class FileNameRetriever(VectorIndexRetriever):
 def createIndex(path: str):
     spinner = Halo(text="Creating index...", spinner="dots", color="white")
     spinner.start()
-    if os.path.isfile(path):
+    cached_path = os.path.join(path, ".DTcache")
+    if os.path.exists(cached_path):
+        # Load index from cache
+        Settings.llm = getLLM()
+        Settings.embed_model = getEmbeddingModel()
+        storage_context = StorageContext.from_defaults(persist_dir=cached_path)
+        index = load_index_from_storage(storage_context)
+        spinner.succeed("File(s) indexed.")
+        return index
+    elif os.path.isfile(path):
         documents = SimpleDirectoryReader(input_files=[path]).load_data()
     elif os.path.isdir(path):
         documents = SimpleDirectoryReader(path).load_data()
@@ -136,6 +146,13 @@ def dirQuery():
     console.print("[bold magenta]Assisstant[/bold magenta]:", str(response), "\n")
 
 
+def dirIndex():
+    dir_path = getDir()
+    index = createIndex(dir_path)
+    index.storage_context.persist(persist_dir=f"{dir_path}/.DTcache")
+    console.print("Index saved.", style="green")
+
+
 def chat():
     # Set the LLM in the global settings
     Settings.llm = getLLM()
@@ -175,4 +192,4 @@ def chat():
 
 # testing
 if __name__ == "__main__":
-    fileQuery()
+    dirSearch()
