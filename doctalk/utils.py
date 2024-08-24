@@ -1,7 +1,7 @@
-import os
 from transformers import logging
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.mistralai import MistralAI
+from llama_index.llms.groq import Groq
 from llama_index.core import Settings
 
 from doctalk.config import Config
@@ -10,7 +10,12 @@ from doctalk.config import Config
 def getLLM():
     # TODO: implement non mistral LLM capabilities
     config = Config()
-    llm = MistralAI(api_key=config.llm_api_key, model=config.llm_name)
+    api_key = config.llm_api_key
+    model_name = config.llm_name
+    if model_name.startswith("llama"):
+        llm = Groq(api_key=api_key, model=model_name)
+    else:
+        llm = MistralAI(api_key=api_key, model=model_name)
     return llm
 
 

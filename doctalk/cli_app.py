@@ -4,8 +4,6 @@ from rich.panel import Panel
 from rich.align import Align
 from pyfiglet import figlet_format
 
-# import time
-
 from doctalk.core import *
 from doctalk.config import Config
 
@@ -65,9 +63,12 @@ def processInput() -> bool:
 def main():
     # Title graphic
     console.print(figlet_format("DocTalk", font="larry3d"), style="bold cyan")
+
+    # Initialize configuration
     global config
     config = Config()
 
+    # Main application loop
     while True:
         mainMenu()
         if not processInput():  # returns false if user has chosen to exit

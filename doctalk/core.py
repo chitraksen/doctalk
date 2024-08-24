@@ -27,13 +27,13 @@ class FileNameRetriever(VectorIndexRetriever):
 
 # TODO: figure out return type - sense checks?
 def createIndex(path: str):
+    Settings.llm = getLLM()
+    Settings.embed_model = getEmbeddingModel()
     spinner = Halo(text="Creating index...", spinner="dots", color="white")
     spinner.start()
     cached_path = os.path.join(path, ".DTcache")
     if os.path.exists(cached_path):
         # Load index from cache
-        Settings.llm = getLLM()
-        Settings.embed_model = getEmbeddingModel()
         storage_context = StorageContext.from_defaults(persist_dir=cached_path)
         index = load_index_from_storage(storage_context)
         spinner.succeed("File(s) indexed.")
@@ -47,9 +47,6 @@ def createIndex(path: str):
         spinner.fail("Error!")
         console.print("Exiting application.", style="bold red")
         raise SystemExit()
-
-    Settings.llm = getLLM()
-    Settings.embed_model = getEmbeddingModel()
 
     # TODO: persist vec index to disk and read from there - checks to see if files changed?
     index = VectorStoreIndex.from_documents(documents)
